@@ -1,1 +1,115 @@
-<p>add-edit-user works!</p>
+<div class="form__container container">
+  <form [formGroup]="formValues" (ngSubmit)="onSubmit()" class="col-12">
+    <div class="form-group my-2">
+      <label for="userName">Name</label>
+      <!--  Bootstrap: add classname "is-invalid" to make border red, message in ".invalid-feedback" will be displayed after.   -->
+      <input
+        class="form-control"
+        [class.is-invalid]="formControls.name.showErr"
+        id="userName"
+        name="name"
+        maxlength="20"
+        formControlName="name"
+        placeholder="Please input name" />
+      <div class="invalid-feedback">
+        <span *ngIf="formControls.name.errors && formControls.name.errors['required']">This is mandatory</span>
+        <span *ngIf="formControls.name.errors && formControls.name.errors['maxlength']">No more than 20 letters</span>
+      </div>
+    </div>
+    <div class="form-group my-2">
+      <label>Gender</label>
+      <input
+        type="radio"
+        name="gender"
+        formControlName="gender"
+        value="0" />man
+      <input
+        type="radio"
+        name="gender"
+        formControlName="gender"
+        value="1" />women
+      <input
+        type="radio"
+        name="gender"
+        formControlName="gender"
+        value="2" />other
+      <input
+        type="radio"
+        name="gender"
+        formControlName="gender"
+        value="3" />secret
+    </div>
+    <div class="form-group my-2">
+      <label for="userAge">Age</label>
+      <input
+        class="form-control"
+        [class.is-invalid]="formControls.age.showErr"
+        id="userAge"
+        name="age"
+        formControlName="age"
+        placeholder="PLease input age"
+        type="number"
+        min="0" />
+      <div class="invalid-feedback">
+        <span>Please input a positive age number</span>
+      </div>
+    </div>
+    <div class="form-group my-2">
+      <label for="userPhone">phone number：</label>
+      <input
+        class="form-control"
+        [class.is-invalid]="formControls.phone.showErr"
+        id="userPhone"
+        formControlName="phone"
+        name="phone"
+        maxlength="15"
+        placeholder="Please input phone number" />
+      <div class="invalid-feedback">
+        <span *ngIf="formControls.phone.errors && formControls.phone.errors['pattern']">Invalid format</span>
+      </div>
+    </div>
+    <div class="form-group my-2">
+      <label for="userEmail">Email address</label>
+      <input
+        class="form-control"
+        [class.is-invalid]="formControls.email.showErr"
+        type="email"
+        name="email"
+        formControlName="email"
+        id="userEmail"
+        placeholder="Please input email address" />
+      <div class="invalid-feedback">
+        <span>Invalid format</span>
+      </div>
+    </div>
+    <div class="form-group my-2">
+      <label for="userJob">Job</label>
+      <input
+        class="form-control"
+        type="job"
+        id="userJob"
+        name="job"
+        placeholder="Please input job position"/>
+    </div>
+    <div class="form-group my-2">
+      <label for="userBrief">Brief introduction</label>
+      <textarea
+        class="form-control"
+        [class.is-invalid]="formControls.brief.showErr"
+        id="userBrief"
+        rows="3"
+        formControlName="brief"
+        minlength="0"
+        maxlength="100"
+        name="brief">
+      </textarea>
+      <div class="invalid-feedback">
+        <span *ngIf="formControls.brief.errors && formControls.brief.errors['maxlength']">No more than 100 words</span>
+      </div>
+    </div>
+    <div class="form-group text-center my-2">
+      <button class="btn btn-secondary mx-2" type="button" (click)="cancel()">Cancel</button>
+      <button class="btn btn-primary mx-2" type="submit" [disabled]="!formValues.valid">Save</button>
+    </div>
+  </form>
+</div>

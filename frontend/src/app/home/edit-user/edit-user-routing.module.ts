@@ -4,6 +4,7 @@ import {AddEditUserComponent} from "../add-edit-user/add-edit-user.component";
 
 const routes: Routes = [
   // { path: '', component: AddEditUserComponent, data: { title: 'EditUser', breadcrumb: ['Home', 'Edit User'] } },
+  // TODO: add canDeactivate
   { path: '', component: AddEditUserComponent }
 ];
 

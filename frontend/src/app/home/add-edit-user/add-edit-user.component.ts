@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {ActivatedRoute, Router} from "@angular/router";
+import {WindowService} from "../../services/window-service.service";
 
 @Component({
   selector: 'app-add-edit-user',
@@ -6,10 +9,97 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./add-edit-user.component.scss']
 })
 export class AddEditUserComponent implements OnInit {
-
-  constructor() { }
+  private id: string | null = '';
+  formValues: FormGroup = this.fb.group({
+    name: ['', [
+      Validators.required,
+      Validators.maxLength(20),
+    ]],
+    gender: ['0', [Validators.min(0), Validators.max(3)]],
+    age: ['', [Validators.required, Validators.min(1)]],
+    phone: ['', Validators.pattern(/^\({0,1}((0|\+61)([24378])){0,1}\){0,1}(|-){0,1}[0-9]{2}(|-){0,1}[0-9]{2}(|-){0,1}[0-9]{1}(|-){0,1}[0-9]{3}$/)],
+    email: ['', [
+      Validators.required,
+      Validators.pattern(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
+    ]],
+    brief: ['', Validators.maxLength(100)]
+  })
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private route: ActivatedRoute,
+    private windowService: WindowService
+  ) {
+    this.id = this.route.snapshot.paramMap.get('id');
+  }
 
   ngOnInit(): void {
+    if (this.id) {
+      this.getUserInfo();
+    }
+  }
+
+  // TODO: replace with Axios GET API
+  getUserInfo(): void {
+    const info = {id: 1, name: 'Mike', job: 'Product Manager', email: 'test@gmail.com', phone: '0489578456'};
+    this.formValues.patchValue(info);
+  }
+
+  onSubmit(): void {
+    if (this.formValues.valid) {
+      if (this.id) {
+        // TODO: replace with Axios PUT API
+        this.windowService.alert('Edit success!');
+        console.log(this.formValues.value);
+      } else {
+        // TODO: replace with Axios POST API
+        this.windowService.alert('Add success!');
+        console.log(this.formValues.value);
+      }
+    }
+  }
+
+  cancel(): void {
+    this.router.navigate(['/home']);
+  }
+
+  // TODO: add canDeactivate()
+
+  get formControls() {
+    const controls = {
+      name: this.formValues.get('name'),
+      age: this.formValues.get('age'),
+      phone: this.formValues.get('phone'),
+      email: this.formValues.get('email'),
+      brief: this.formValues.get('brief')
+    }
+    return {
+      name: {
+        control: controls.name,
+        showErr: controls.name?.touched && controls.name.invalid,
+        errors: controls.name?.errors
+      },
+      age: {
+        control: controls.age,
+        showErr: controls.age?.touched && controls.age.invalid,
+        errors: controls.age?.errors
+      },
+      phone: {
+        control: controls.phone,
+        showErr: controls.phone?.touched && controls.phone.invalid,
+        errors: controls.phone?.errors
+      },
+      email: {
+        control: controls.email,
+        showErr: controls.email?.touched && controls.email.invalid,
+        errors: controls.email?.errors
+      },
+      brief: {
+        control: controls.brief,
+        showErr: controls.brief?.touched && controls.brief.invalid,
+        errors: controls.brief?.errors
+      },
+    }
   }
 
 }
