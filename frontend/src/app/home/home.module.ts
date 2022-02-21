@@ -10,6 +10,8 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatNativeDateModule} from "@angular/material/core";
 import {MatInputModule} from "@angular/material/input";
+import {FlexLayoutModule} from "@angular/flex-layout";
+import {UserDetailModule} from "./user-detail/user-detail.module";
 
 
 
@@ -24,10 +26,12 @@ import {MatInputModule} from "@angular/material/input";
     ReactiveFormsModule,
     HomeRoutingModule,
     UsersModule,
+    UserDetailModule,
     MatDatepickerModule,
     MatFormFieldModule,
     MatNativeDateModule,
-    MatInputModule
+    MatInputModule,
+    FlexLayoutModule
   ]
 })
 export class HomeModule { }

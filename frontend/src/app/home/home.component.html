@@ -1,5 +1,5 @@
 <div class="home">
-  <header class="alert alert-primary">
+  <header class="alert alert-primary" [style.border]="'none'">
     <div class="container-fluid">
       <div class="row justify-content-center align-items-center">
         <div>
@@ -9,18 +9,51 @@
     </div>
   </header>
   <div class="container">
-    <nav class="breadcrumb__wrapper alert alert-success" aria-label="breadcrumb">
-      <ul class="breadcrumb">
+    <nav class="breadcrumb__wrapper" aria-label="breadcrumb">
+      <ul class="breadcrumb m-0">
         <li class="breadcrumb-item" *ngFor="let item of breadcrumb">
           <a [routerLink]="getLink(item)">{{ item }}</a>
         </li>
       </ul>
     </nav>
-    <div class="content">
-      <router-outlet #outlet="outlet"></router-outlet>
-    </div>
+    <router-outlet></router-outlet>
   </div>
-  <footer>
-    <div class="footer"></div>
+  <footer class="footer" fxLayoutAlign="space-around" fxShow="false" fxShow.lg="true">
+    <section class="footer__logo-container" fxLayoutAlign="space-between center">
+      <div fxLayout="row" fxFlex="30%">
+        <div class="footer__logo-container--left">
+          <a routerLink="/home">
+            <img class="logo" src="/assets/logo.jpeg" alt="logo"/>
+          </a>
+        </div>
+        <div class="footer__logo-container--right" fxLayout="column" fxLayoutAlign="center">
+          <div>
+            <span>Chris Liu</span>
+          </div>
+          <div>
+            <span>Copyright © 2022</span>
+          </div>
+        </div>
+      </div>
+      <div class="footer__icon-container h-100" fxFlex="70%">
+        <div class="footer__icon-container--inner h-100">
+          <div class="footer__icon-container--list h-100" fxLayoutAlign="space-around center">
+            <div *ngFor="let item of footerData" class="footer__icon-container--item h-100" fxLayoutAlign="space-between center">
+              <i class="footer__icon-container--icon"
+                [style.background-image]="'url(' + item.icon + ')'"
+                [style.background-color]="'transparent'">
+              </i>
+              <div class="footer__icon-container--item-desc h-100">
+                <div class="footer__icon-container--item-hide-desc"></div>
+                <div class="footer__icon-container--item-desc-inner">
+                  <p class="footer__icon-container--name">{{item.name}}</p>
+                  <p class="footer__icon-container--describe">{{item.description}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </footer>
 </div>

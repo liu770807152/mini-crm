@@ -12,14 +12,102 @@ a {
     cursor: pointer;
     outline: none;
   }
-}
-.breadcrumb {
-  margin: 0;
+  .breadcrumb__wrapper {
+    position: relative;
+    padding: 1rem 1rem;
+    margin-bottom: 1rem;
+    border: none;
+    border-radius: 1rem;
+    background: linear-gradient(90deg, #d6e6ff, #6facff);
+  }
 }
 .footer {
+  position: fixed;
+  bottom: 0;
   width: 100%;
-  height: 50px;
+  height: 70px;
   margin-top: 5px;
+  background-color: #2a2a32;
+  &__logo-container {
+    width: 100%;
+    max-width: 900px;
+    flex-wrap: nowrap;
+    color: #888;
+    letter-spacing: 2px;
+    font-size: 10px;
+    text-align: center;
+    .logo {
+      width: 60px;
+      background-color: #fff;
+      border-radius: 50%;
+    }
+    &--right {
+      margin-left: 10px;
+      padding: 5px;
+      border-radius: 3px;
+      background-color: #000;
+      font-weight: 600;
+      text-align: center;
+    }
+  }
+  &__icon-container {
+    &--list {
+      overflow: hidden;
+    }
+    &--item {
+      padding: 0 20px;
+      transition: all 0.3s;
+      &-desc {
+        position: relative;
+        overflow: hidden;
+        &-inner {
+          position: absolute;
+          left: 0;
+          top: 10px;
+          width: 200px;
+          color: #fff;
+          opacity: 0;
+          transition: all 0.3s;
+        }
+      }
+      &-hide-desc {
+        width: 0;
+        opacity: 0;
+        transition: all 0.3s;
+      }
+      &:hover &-hide-desc {
+        width: 200px;
+        opacity: 1;
+      }
+      &:hover &-desc-inner {
+        opacity: 1;
+      }
+    }
+    &--icon {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+    &--name {
+      font-weight: bold;
+      font-size: 14px;
+      margin: 4px 0 2px;
+    }
+    &--describe {
+      font-size: 12px;
+      margin: 0;
+    }
+  }
+  &__text-container {
+    max-width: 80%;
+    height: auto;
+    margin: auto;
+    color: #888;
+    font-size: 16px;
+    text-align: center;
+  }
 }
 
 @media screen and (max-width: 768px) {
