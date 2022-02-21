@@ -6,6 +6,11 @@ import { AddEditUserComponent } from './add-edit-user/add-edit-user.component';
 import {ReactiveFormsModule} from "@angular/forms";
 import {UsersModule} from "./users/users.module";
 import {RouterModule} from "@angular/router";
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatNativeDateModule} from "@angular/material/core";
+import {MatInputModule} from "@angular/material/input";
+
 
 
 @NgModule({
@@ -19,6 +24,10 @@ import {RouterModule} from "@angular/router";
     ReactiveFormsModule,
     HomeRoutingModule,
     UsersModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatNativeDateModule,
+    MatInputModule
   ]
 })
 export class HomeModule { }

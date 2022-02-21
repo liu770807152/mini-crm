@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {WindowService} from "../../services/window-service.service";
@@ -10,12 +10,16 @@ import {WindowService} from "../../services/window-service.service";
 })
 export class AddEditUserComponent implements OnInit {
   private id: string | null = '';
+  minDate: Date;
+  maxDate: Date;
+  submitted = false;
   formValues: FormGroup = this.fb.group({
     name: ['', [
       Validators.required,
       Validators.maxLength(20),
     ]],
-    gender: ['0', [Validators.min(0), Validators.max(3)]],
+    gender: ['man'],
+    dob: [''],
     age: ['', [Validators.required, Validators.min(1)]],
     phone: ['', Validators.pattern(/^\({0,1}((0|\+61)([24378])){0,1}\){0,1}(|-){0,1}[0-9]{2}(|-){0,1}[0-9]{2}(|-){0,1}[0-9]{1}(|-){0,1}[0-9]{3}$/)],
     email: ['', [
@@ -28,9 +32,13 @@ export class AddEditUserComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
-    private windowService: WindowService
+    private windowService: WindowService,
   ) {
     this.id = this.route.snapshot.paramMap.get('id');
+    // Set the minimum to January 1st 80 years in the past and December 31st in this year.
+    const currentYear = new Date().getFullYear();
+    this.minDate = new Date(currentYear - 80, 0, 1);
+    this.maxDate = new Date(currentYear, 11, 31);
   }
 
   ngOnInit(): void {
@@ -46,7 +54,9 @@ export class AddEditUserComponent implements OnInit {
   }
 
   onSubmit(): void {
+    this.submitted = true;
     if (this.formValues.valid) {
+      console.log(this.formValues.value)
       if (this.id) {
         // TODO: replace with Axios PUT API
         this.windowService.alert('Edit success!');

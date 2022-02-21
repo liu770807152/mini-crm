@@ -1,7 +1,7 @@
 <div class="form__container container">
   <form [formGroup]="formValues" (ngSubmit)="onSubmit()" class="col-12">
     <div class="form-group my-2">
-      <label for="userName">Name</label>
+      <label for="userName">Name *</label>
       <!--  Bootstrap: add classname "is-invalid" to make border red, message in ".invalid-feedback" will be displayed after.   -->
       <input
         class="form-control"
@@ -11,36 +11,33 @@
         maxlength="20"
         formControlName="name"
         placeholder="Please input name" />
-      <div class="invalid-feedback">
-        <span *ngIf="formControls.name.errors && formControls.name.errors['required']">This is mandatory</span>
+      <div class="invalid-feedback" [style.display]="submitted && formValues.get('name')?.untouched || formControls.name.showErr ? 'block' : 'none'">
+        <span *ngIf="formControls.name.errors && formControls.name.errors['required']">Please enter name</span>
+        <!--<span *ngIf="formValues.get('name')?.hasError('required')">This is mandatory</span>-->
         <span *ngIf="formControls.name.errors && formControls.name.errors['maxlength']">No more than 20 letters</span>
       </div>
     </div>
     <div class="form-group my-2">
-      <label>Gender</label>
-      <input
-        type="radio"
-        name="gender"
-        formControlName="gender"
-        value="0" />man
-      <input
-        type="radio"
-        name="gender"
-        formControlName="gender"
-        value="1" />women
-      <input
-        type="radio"
-        name="gender"
-        formControlName="gender"
-        value="2" />other
-      <input
-        type="radio"
-        name="gender"
-        formControlName="gender"
-        value="3" />secret
+      <div class="form__select--wrapper">
+        <label for="gender">Gender *</label>
+        <select name="gender" id="gender" formControlName="gender" class="form__select">
+          <option class="form__select--item" value="man">Man</option>
+          <option class="form__select--item" value="woman">Woman</option>
+          <option class="form__select--item" value="other">Other</option>
+          <option class="form__select--item" value="secret">Secret</option>
+        </select>
+      </div>
     </div>
     <div class="form-group my-2">
-      <label for="userAge">Age</label>
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Select date of birth</mat-label>
+        <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="$any(picker)" formControlName="dob">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div class="form-group my-2">
+      <label for="userAge">Age *</label>
       <input
         class="form-control"
         [class.is-invalid]="formControls.age.showErr"
@@ -50,12 +47,13 @@
         placeholder="PLease input age"
         type="number"
         min="0" />
-      <div class="invalid-feedback">
-        <span>Please input a positive age number</span>
+      <div class="invalid-feedback" [style.display]="submitted && formValues.get('name')?.untouched || formControls.name.showErr ? 'block' : 'none'">
+        <span *ngIf="formControls.age.errors && formControls.age.errors['required']">Please enter age</span>
+        <span *ngIf="formControls.age.errors && formControls.age.errors['min']">Please input a positive age number</span>
       </div>
     </div>
     <div class="form-group my-2">
-      <label for="userPhone">phone number：</label>
+      <label for="userPhone">Phone Number</label>
       <input
         class="form-control"
         [class.is-invalid]="formControls.phone.showErr"
@@ -69,7 +67,7 @@
       </div>
     </div>
     <div class="form-group my-2">
-      <label for="userEmail">Email address</label>
+      <label for="userEmail">Email Address *</label>
       <input
         class="form-control"
         [class.is-invalid]="formControls.email.showErr"
@@ -78,8 +76,9 @@
         formControlName="email"
         id="userEmail"
         placeholder="Please input email address" />
-      <div class="invalid-feedback">
-        <span>Invalid format</span>
+      <div class="invalid-feedback" [style.display]="submitted && formValues.get('email')?.untouched || formControls.email.showErr ? 'block' : 'none'">
+        <span *ngIf="formControls.email.errors && formControls.email.errors['required']">Please enter email address</span>
+        <span *ngIf="formControls.email.errors && formControls.email.errors['pattern']">Invalid format</span>
       </div>
     </div>
     <div class="form-group my-2">
@@ -109,7 +108,7 @@
     </div>
     <div class="form-group text-center my-2">
       <button class="btn btn-secondary mx-2" type="button" (click)="cancel()">Cancel</button>
-      <button class="btn btn-primary mx-2" type="submit" [disabled]="!formValues.valid">Save</button>
+      <button class="btn btn-primary mx-2" type="submit">Save</button>
     </div>
   </form>
 </div>
