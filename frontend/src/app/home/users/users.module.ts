@@ -6,6 +6,7 @@ import {RouterModule} from "@angular/router";
 import {SpinComponent} from "../spin/spin.component";
 import {MatPaginatorModule} from "@angular/material/paginator";
 import {MatTableModule} from "@angular/material/table";
+import {FlexLayoutModule} from "@angular/flex-layout";
 
 
 
@@ -16,7 +17,8 @@ import {MatTableModule} from "@angular/material/table";
     FormsModule,
     RouterModule,
     MatPaginatorModule,
-    MatTableModule
+    MatTableModule,
+    FlexLayoutModule
   ]
 })
 export class UsersModule { }

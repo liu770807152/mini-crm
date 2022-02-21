@@ -1,0 +1,52 @@
+.card__wrapper {
+  margin: auto;
+  min-height: 100vh;
+}
+.profile-card {
+  position: relative;
+  width: 100%;
+  height: fit-content;
+  color: #ffffff;
+  border: none;
+  text-align: center;
+  font-family: 'Open Sans', Arial, sans-serif;
+  overflow: hidden;
+  &__content {
+    width: 100%;
+    margin-top: 20px;
+    padding: 15px 25px;
+    z-index: 1;
+  }
+  &__background {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    vertical-align: top;
+    opacity: 0.9;
+    filter: blur(3px);
+    transform: scale(1.8);
+  }
+  &__avatar {
+    width: 100%;
+    max-width: 110px;
+    margin-bottom: 20px;
+    border-radius: 50%;
+    opacity: 1;
+    box-shadow: 3px 3px 20px rgba(0, 0, 0, 0.5);
+    border: 2px solid rgba(255, 255, 255, 1);
+  }
+  h2 {
+    margin: 0 0 5px;
+    font-weight: 600;
+    font-size: 25px;
+    small{
+      display: block;
+      font-size: 15px;
+      margin-top: 10px;
+    }
+  }
+  p {
+    font-weight: 600;
+    font-size: 15px;
+  }
+}

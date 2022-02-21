@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserDetailComponent } from './user-detail.component';
+import {FlexLayoutModule} from "@angular/flex-layout";
+import {RouterModule} from "@angular/router";
 
 
 
@@ -9,7 +11,9 @@ import { UserDetailComponent } from './user-detail.component';
     UserDetailComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    FlexLayoutModule,
+    RouterModule
   ]
 })
 export class UserDetailModule { }

@@ -1,12 +1,17 @@
 import { Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
+import {TrimStringService} from "../../services/trim-string.service";
 
 export interface User {
   id: number;
   name: string;
-  job: string;
+  age: number;
+  dob?: string;
+  job?: string;
   email: string;
-  phone: string;
+  phone?: string;
+  gender?: string;
+  brief?: string;
 }
 
 export interface SearchParams {
@@ -16,20 +21,15 @@ export interface SearchParams {
 }
 
 const TEMP_DATA: User[] = [
-  {id: 1, name: 'Mike', job: 'Product Manager', email: 'test@gmail.com', phone: '0489578456'},
-  {id: 2, name: 'Ben', job: 'Sales', email: 'test@gmail.com', phone: '0489578456'},
-  {id: 3, name: 'Simons', job: 'Receptionist', email: 'test@gmail.com', phone: '0489578456'},
-  {id: 4, name: 'Anthony', job: 'Scholar', email: 'test@gmail.com', phone: '0489578456'},
-  {id: 5, name: 'Will', job: 'Professor', email: 'test@gmail.com', phone: '0489578456'},
-  {id: 6, name: 'Smith', job: 'Teacher', email: 'test@gmail.com', phone: '0489578456'},
-  {id: 7, name: 'John', job: 'Accountant', email: 'test@gmail.com', phone: '0489578456'},
-  {id: 8, name: 'Johnson', job: 'Engineer', email: 'test@gmail.com', phone: '0489578456'},
-  {id: 9, name: 'livingston', job: 'Business Owner', email: 'test@gmail.com', phone: '0489578456'},
-  {id: 10, name: 'Berkley', job: 'Driver', email: 'test@gmail.com', phone: '0489578456'},
-  {id: 11, name: 'Kimberly', job: 'Chef', email: 'test@gmail.com', phone: '0489578456'},
-  {id: 12, name: 'June', job: 'Bartender', email: 'test@gmail.com', phone: '0489578456'},
-  {id: 13, name: 'Annie', job: 'Policeman', email: 'test@gmail.com', phone: '0489578456'},
-  {id: 14, name: 'Jose', job: 'Fireman', email: 'test@gmail.com', phone: '0489578456'},
+  {id: 1, name: 'Mike dqwdqqwqwqwdq', age: 12, job: 'Product Manager aaaaaaaaaaaa', email: 'test@gmail.comdsddqwdqqwdq', phone: '0489578456', gender: 'other'},
+  {id: 2, name: 'Mike', age: 1, job: 'Product Manager', email: 'test@gmail.com', phone: '0489578456', gender: 'man'},
+  {id: 3, name: 'Mike', age: 12, job: 'Product Manager', email: 'test@gmail.com', phone: '0489578456', gender: 'woman'},
+  {id: 4, name: 'Mike', age: 12, job: 'Product Manager', email: 'test@gmail.com', phone: '0489578456', gender: 'man'},
+  {id: 5, name: 'Mike', age: 12, job: 'Product Manager', email: 'test@gmail.com', phone: '0489578456', gender: 'woman'},
+  {id: 6, name: 'Mike', age: 12, job: 'Product Manager', email: 'test@gmail.com', phone: '0489578456', gender: 'woman'},
+  {id: 7, name: 'Mike', age: 12, job: 'Product Manager', email: 'test@gmail.com', phone: '0489578456', gender: 'other'},
+  {id: 8, name: 'Mike', age: 12, job: 'Product Manager', email: 'test@gmail.com', phone: '0489578456', gender: 'other'},
+  {id: 9, name: 'Mike', age: 12, job: 'Product Manager', email: 'test@gmail.com', phone: '0489578456', gender: 'secret'},
 ];
 
 @Component({
@@ -45,12 +45,29 @@ export class UsersComponent implements OnInit {
   }
   displayedColumns: string[] = ['name', 'job', 'email', 'phone', 'operation'];
   userList: User[] = [];
+  // @ts-ignore
+  innerWidth: number;
   showSpin: boolean = false;
-  constructor(private route: Router) { }
+  constructor(private route: Router, private trimService: TrimStringService) { }
 
   ngOnInit(): void {
+    this.innerWidth = window.innerWidth;
     this.showSpin = true;
+    this.getRange();
     this.getList();
+  }
+
+  trim(str: string): string {
+    return this.trimService.trim(str, this.getRange());
+  }
+
+  getRange(): number {
+    if (this.innerWidth <= 400) {
+      return 12;
+    } else if (this.innerWidth <= 820) {
+      return 16;
+    }
+    return 35;
   }
 
   getList(): void {

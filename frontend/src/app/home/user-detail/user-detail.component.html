@@ -1,1 +1,26 @@
-<p>user-detail works!</p>
+<section class="card__wrapper" fxFlex="80%" fxFlex.xs="grow">
+  <div class="card profile-card">
+    <img src="assets/bg.jpg" alt="profile1" class="profile-card__background"/>
+    <section class="profile-card__content" fxLayout="column" fxLayoutAlign="center center">
+      <img src="assets/avatar.png" alt="profile-image" class="profile-card__avatar"/>
+      <h2>{{userInfo?.name}}<small>Job Position: {{userInfo?.job ?? 'Unknown'}}</small></h2>
+      <section class="w-75 my-2" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-around" fxLayoutGap="10">
+        <p fxFlex="33%">Gender: {{userInfo?.gender}}</p>
+        <p fxFlex="33%">Age: {{userInfo?.age}}</p>
+        <p fxFlex="33%">Date of Birth: {{userInfo?.dob ?? 'Unknown'}}</p>
+      </section>
+      <section class="w-75 my-2" fxLayout="row" fxLayout.xs="column" fxLayoutGap="10">
+        <p fxFlex="grow">Phone Number: {{userInfo?.phone ?? 'Unknown'}}</p>
+        <p fxFlex="grow">Email Address: {{userInfo?.email}}</p>
+      </section>
+      <section class="form-group my-3">
+        <p title="Brief introduction">Brief Introduction: {{userInfo?.brief ?? 'Unknown'}}</p>
+      </section>
+      <div class="form-group text-center my-2">
+        <button class="btn btn-success mx-2" type="button" (click)="goToEditUser()">Edit</button>
+        <button class="btn btn-danger mx-2" type="button" (click)="deleteUser()">Delete</button>
+        <button class="btn btn-secondary mx-2" type="button" (click)="goToHome()">Back to Home</button>
+      </div>
+    </section>
+  </div>
+</section>
