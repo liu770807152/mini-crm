@@ -20,7 +20,7 @@ export class AddEditUserComponent implements OnInit {
     ]],
     gender: ['man'],
     dob: [''],
-    age: ['', [Validators.required, Validators.min(1)]],
+    age: [18, [Validators.required, Validators.min(1)]],
     phone: ['', Validators.pattern(/^\({0,1}((0|\+61)([24378])){0,1}\){0,1}(|-){0,1}[0-9]{2}(|-){0,1}[0-9]{2}(|-){0,1}[0-9]{1}(|-){0,1}[0-9]{3}$/)],
     email: ['', [
       Validators.required,
@@ -47,9 +47,13 @@ export class AddEditUserComponent implements OnInit {
     }
   }
 
+  getTitle(): string {
+    return this.id ? 'Edit User Panel' : 'Add User Panel';
+  }
+
   // TODO: replace with Axios GET API
   getUserInfo(): void {
-    const info = {id: 1, name: 'Mike', job: 'Product Manager', email: 'test@gmail.com', phone: '0489578456'};
+    const info = {id: 1, name: 'Mike', age: 12, job: 'Product Manager', email: 'test@gmail.com', phone: '0489578456', gender: 'other', dob: new Date()};
     this.formValues.patchValue(info);
   }
 
@@ -69,11 +73,16 @@ export class AddEditUserComponent implements OnInit {
     }
   }
 
-  cancel(): void {
+  Cancel(): void {
     this.router.navigate(['/home']);
   }
 
-  // TODO: add canDeactivate()
+  canDeactivate() {
+    if (this.formValues.dirty && !this.submitted) {
+      return confirm('Data is not saved yet. Still want to leave?');
+    }
+    return true;
+  }
 
   get formControls() {
     const controls = {
