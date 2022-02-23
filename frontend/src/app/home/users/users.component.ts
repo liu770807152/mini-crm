@@ -1,36 +1,10 @@
 import { Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {TrimStringService} from "../../services/trim-string.service";
+import User from "../../types/user";
+import SearchParams from "../../types/search";
+import {AxiosService} from "../../services/axios-server.service";
 
-export interface User {
-  id: number;
-  name: string;
-  age: number;
-  dob?: string;
-  job?: string;
-  email: string;
-  phone?: string;
-  gender?: string;
-  brief?: string;
-}
-
-export interface SearchParams {
-  name: string;
-  job: string;
-  email: string;
-}
-
-const TEMP_DATA: User[] = [
-  {id: 1, name: 'Mike dqwdqqwqwqwdq', age: 12, job: 'Product Manager aaaaaaaaaaaa', email: 'test@gmail.comdsddqwdqqwdq', phone: '0489578456', gender: 'other'},
-  {id: 2, name: 'Mike', age: 1, job: 'Product Manager', email: 'test@gmail.com', phone: '0489578456', gender: 'man'},
-  {id: 3, name: 'Mike', age: 12, job: 'Product Manager', email: 'test@gmail.com', phone: '0489578456', gender: 'woman'},
-  {id: 4, name: 'Mike', age: 12, job: 'Product Manager', email: 'test@gmail.com', phone: '0489578456', gender: 'man'},
-  {id: 5, name: 'Mike', age: 12, job: 'Product Manager', email: 'test@gmail.com', phone: '0489578456', gender: 'woman'},
-  {id: 6, name: 'Mike', age: 12, job: 'Product Manager', email: 'test@gmail.com', phone: '0489578456', gender: 'woman'},
-  {id: 7, name: 'Mike', age: 12, job: 'Product Manager', email: 'test@gmail.com', phone: '0489578456', gender: 'other'},
-  {id: 8, name: 'Mike', age: 12, job: 'Product Manager', email: 'test@gmail.com', phone: '0489578456', gender: 'other'},
-  {id: 9, name: 'Mike', age: 12, job: 'Product Manager', email: 'test@gmail.com', phone: '0489578456', gender: 'secret'},
-];
 
 @Component({
   selector: 'app-users',
@@ -48,7 +22,7 @@ export class UsersComponent implements OnInit {
   // @ts-ignore
   innerWidth: number;
   showSpin: boolean = false;
-  constructor(private route: Router, private trimService: TrimStringService) { }
+  constructor(private route: Router, private trimService: TrimStringService, private axiosService: AxiosService) { }
 
   ngOnInit(): void {
     this.innerWidth = window.innerWidth;
@@ -71,10 +45,11 @@ export class UsersComponent implements OnInit {
   }
 
   getList(): void {
-    setTimeout(() => {
-      this.userList = TEMP_DATA;
+    // @ts-ignore
+    this.axiosService.getAllUsers().then((res: User[]) => {
+      this.userList = res;
       this.showSpin = false;
-    }, 1000);
+    });
   }
 
   goToDetail(user: User): void {
@@ -86,13 +61,17 @@ export class UsersComponent implements OnInit {
     this.route.navigate(['/edit-user', id]);
   }
 
-  // TODO: Implement search
   search(): void {
-    console.log(this.searchParams);
-    this.getList();
+    this.showSpin = true;
+    const filter = Object.fromEntries(Object.entries(this.searchParams).filter(([_, v]) => v != ''));
+    console.log(filter);
+    // @ts-ignore
+    this.axiosService.getUsersBySearchParams(this.searchParams).then((res: User[]) => {
+      this.showSpin = false;
+      this.userList = res;
+    })
   }
 
-  // TODO: Implement reset
   reset(): void {
     this.searchParams = {
       name: '',
@@ -102,9 +81,13 @@ export class UsersComponent implements OnInit {
     this.getList();
   }
 
-  // TODO: Implement delete
   deleteUser(id: number, event: MouseEvent): void {
     event.stopPropagation();
-    console.log('delete');
+    // @ts-ignore
+    this.axiosService.deleteOneUser(id).then((res: number) => {
+      if (res === 1) {
+        this.getList();
+      }
+    });
   }
 }

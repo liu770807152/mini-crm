@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {WindowService} from "../../services/window-service.service";
-import {User} from "../users/users.component";
 import * as dayjs from "dayjs";
+import User from "../../types/user";
+import {AxiosService} from "../../services/axios-server.service";
 
 @Component({
   selector: 'app-user-detail',
@@ -10,14 +11,15 @@ import * as dayjs from "dayjs";
   styleUrls: ['./user-detail.component.scss']
 })
 export class UserDetailComponent implements OnInit {
-  id: string | null;
+  id: number;
   userInfo: User | undefined;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private windowService: WindowService
+    private windowService: WindowService,
+    private axiosService: AxiosService,
   ) {
-    this.id = this.route.snapshot.paramMap.get('id');
+    this.id = parseInt(<string>this.route.snapshot.paramMap.get('id')) ;
   }
 
   ngOnInit(): void {
@@ -26,13 +28,16 @@ export class UserDetailComponent implements OnInit {
     }
   }
 
-  // TODO: replace with Axios GET API
   getUserInfo(): void {
-    const info = {id: 1, name: 'Mike', age: 12, job: 'Product Manager', email: 'test@gmail.com', phone: '0489578456', gender: 'other', dob: new Date()};
-    this.userInfo = {
-      ...info,
-      dob: dayjs(info.dob).format('DD/MM/YYYY')
-    };
+    // @ts-ignore
+    this.axiosService.getUserById(this.id).then((res: User) => {
+      const dob = dayjs(res.dob).format('DD/MM/YYYY');
+      this.userInfo = {
+        ...res,
+        dob
+      };
+    })
+
   }
 
   deleteUser(): void {

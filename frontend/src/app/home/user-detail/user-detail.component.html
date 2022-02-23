@@ -2,7 +2,7 @@
   <div class="card profile-card">
     <img src="assets/bg.jpg" alt="profile1" class="profile-card__background"/>
     <section class="profile-card__content" fxLayout="column" fxLayoutAlign="center center">
-      <img src="assets/avatar.png" alt="profile-image" class="profile-card__avatar"/>
+      <img [src]="userInfo?.gender === 'man' ? 'assets/avatar.png' : 'assets/avatar2.jpg'" alt="profile-image" class="profile-card__avatar"/>
       <h2>{{userInfo?.name}}<small>Job Position: {{userInfo?.job ?? 'Unknown'}}</small></h2>
       <section class="w-75 my-2" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-around" fxLayoutGap="10">
         <p fxFlex="33%">Gender: {{userInfo?.gender}}</p>

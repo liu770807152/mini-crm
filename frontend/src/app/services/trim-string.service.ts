@@ -5,7 +5,9 @@ import { Injectable } from '@angular/core';
 })
 export class TrimStringService {
   trim(str: string, length: number): string {
-    if (str.length > length)
+    if (!str)
+      return '';
+    else if (str.length > length)
       return str.substring(0, length) + '...';
     else
       return str;

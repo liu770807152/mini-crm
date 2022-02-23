@@ -2,6 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {WindowService} from "../../services/window-service.service";
+import {AxiosService} from "../../services/axios-server.service";
+import User from "../../types/user";
+import * as dayjs from "dayjs";
 
 @Component({
   selector: 'app-add-edit-user',
@@ -9,7 +12,7 @@ import {WindowService} from "../../services/window-service.service";
   styleUrls: ['./add-edit-user.component.scss']
 })
 export class AddEditUserComponent implements OnInit {
-  private id: string | null = '';
+  private id: number;
   minDate: Date;
   maxDate: Date;
   submitted = false;
@@ -18,6 +21,7 @@ export class AddEditUserComponent implements OnInit {
       Validators.required,
       Validators.maxLength(20),
     ]],
+    job: [''],
     gender: ['man'],
     dob: [''],
     age: [18, [Validators.required, Validators.min(1)]],
@@ -33,8 +37,9 @@ export class AddEditUserComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private windowService: WindowService,
+    private axiosService: AxiosService
   ) {
-    this.id = this.route.snapshot.paramMap.get('id');
+    this.id = parseInt(<string>this.route.snapshot.paramMap.get('id'));
     // Set the minimum to January 1st 80 years in the past and December 31st in this year.
     const currentYear = new Date().getFullYear();
     this.minDate = new Date(currentYear - 80, 0, 1);
@@ -51,24 +56,32 @@ export class AddEditUserComponent implements OnInit {
     return this.id ? 'Edit User Panel' : 'Add User Panel';
   }
 
-  // TODO: replace with Axios GET API
   getUserInfo(): void {
-    const info = {id: 1, name: 'Mike', age: 12, job: 'Product Manager', email: 'test@gmail.com', phone: '0489578456', gender: 'other', dob: new Date()};
-    this.formValues.patchValue(info);
+    // @ts-ignore
+    this.axiosService.getUserById(this.id).then((res: User) => {
+      this.formValues.patchValue(res);
+    });
   }
 
   onSubmit(): void {
     this.submitted = true;
+    const data = this.formValues.value;
+    data.dob = dayjs(data.dob).format('YYYY-MM-DD');
     if (this.formValues.valid) {
-      console.log(this.formValues.value)
       if (this.id) {
-        // TODO: replace with Axios PUT API
-        this.windowService.alert('Edit success!');
-        console.log(this.formValues.value);
+        // @ts-ignore
+        this.axiosService.updateUser(data, this.id).then((res: number) => {
+          if (res === 1) {
+            this.windowService.alert('Edit success!');
+          }
+        });
       } else {
-        // TODO: replace with Axios POST API
-        this.windowService.alert('Add success!');
-        console.log(this.formValues.value);
+        // @ts-ignore
+        this.axiosService.addNewUser(data).then((res: number) => {
+          if (res === 1) {
+            this.windowService.alert('Add success!');
+          }
+        });
       }
     }
   }
